@@ -8,5 +8,12 @@
     <h1>
         it's working!!!!
     </h1>
+
+    <ul>
+    {% for Text in texts %}
+        <li> {{ Text.content }} {{ Text.date }}
+        </li>
+    {% endfor %}
+</ul>
 </body>
 </html>

@@ -1,6 +1,7 @@
 from django.shortcuts import render
-
+from .models import Text
 def index(request):
-    return render(request, 'index.html')
+    texts = Text.objects.all()
+    return render(request, 'index.html', {'texts': texts})
 
 # Create your views here.
