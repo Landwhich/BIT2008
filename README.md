@@ -42,3 +42,11 @@ Note that the lab computers may have vim as a default editor for commits. Vim ca
 4. Create a `urls.py` in your app, and configure the `urls.py` in your project to include your app's `urls.py`
 5. Create a simple "hello world" view - if someone makes a request to `127.0.0.1:8000/`, they should get an HTTP Response that says "Hello World!"
 6. Commit and push your changes again
+
+launch with:
+may need to alter localhost ip or ports depending on your platform
+`daphne -b 127.0.0.1 -p 8000 termproject.asgi:application`
+
+reqs:
+channels~=4.2.0
+daphne~=4.1.2

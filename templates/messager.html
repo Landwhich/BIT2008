@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Messager</title>
+</head>
+<body>
+    <h1>Hey, {{ user }}</h1>
+    {% for Text in texts %}
+        <p>{{ Text.room }} <b>{{ Text.content }}</b></p>
+    {% endfor %}
+    <div id="messages"></div>
+
+    <form id="form">
+        <input type="text" name="message"/>
+    </form>
+
+    <script type="text/javascript">
+        let roomName = "general";
+        let url = new WebSocket(`ws://${window.location.host}/ws/socket-server/${roomName}/`);
+
+        const ws = new WebSocket(url)
+
+        ws.onmessage = function(e){
+            let data = JSON.parse(e.data)
+            console.log('Data:', data)
+
+            if(data.type === 'chat'){
+                let messages = document.getElementById('messages')
+                messages.insertAdjacentHTML('beforeend',`<div>
+                <p>${data.message}</p>
+                </div>`)
+            }
+        }
+
+        let form = document.getElementById('form')
+        form.addEventListener('submit', (e) => {
+            e.preventDefault()
+            let message = e.target.message.value
+            ws.send(JSON.stringify({
+                'message':message
+            }))
+            form.reset()
+        })
+    </script>
+</body>
+</html>
+{% endblock %}

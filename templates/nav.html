@@ -1,0 +1,9 @@
+<header>
+<nav style="display: flex; justify-content: space-between; background-color: grey">
+    <p style="margin:0">Messager ^tm</p>
+    <a href="{% url 'index' %}">Main page</a>
+    {% if user.is_authenticated %}
+    <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">Log Out</button></form>
+    {% endif %}
+</nav>
+</header>

@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <title>Log in</title>
+</head>
+<body>
+<h1>Log In</h1>
+    <form method="post" style="display: block">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit">Log In</button>
+        <h3>Password Guidelines:</h3>
+        <ul>
+            <li>Must be more than 8 characters</li>
+            <li>Cannot be similar to your username</li>
+            <li>Must include numbers and letters</li>
+        </ul>
+        {% if error %}
+            <p style="color: red">{{ error }}</p>
+        {% endif %}
+    </form>
+    <a href={% url 'register' %}>Not a member? Create an Account</a>
+</body>
+</html>
+{% endblock %}
