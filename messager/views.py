@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Text, Room
-from .forms import UserCreationForm
+from .models import Text
+from .forms import RegistrationForm
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import login, authenticate, logout
 
@@ -19,13 +20,14 @@ def sign_in(request):
 
 def sign_up(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save()
             login(request, user)
+            messages.success(request, 'Welcome {}'.format(user.username))
             return redirect('/')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
     return render(request, 'auth/registration.html', {'form': form})
 
 def sign_out(request):
@@ -33,8 +35,8 @@ def sign_out(request):
     redirect('/')
 @login_required(login_url='/login')
 def index(request):
-    rooms = Room.objects.all()
-    return render(request, 'index.html', {'rooms': rooms, 'user': request.user})
+    # rooms = Room.objects.all()
+    return render(request, 'index.html', {'user': request.user})
 @login_required(login_url='/login')
 def messager(request):
     texts = Text.objects.all()

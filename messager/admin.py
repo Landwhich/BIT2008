@@ -3,6 +3,6 @@ from .models import Text
 
 @admin.register(Text)
 class ChatMessageAdmin(admin.ModelAdmin):
-    list_display = ('room', 'content', 'date')
+    list_display = ('content', 'date')
 
 # Register your models here.
