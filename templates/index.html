@@ -9,12 +9,14 @@
 <body>
     <h1>
         Messenger app, Welcome {{ user }}
+        <br> {{ profile.bio }}
     </h1>
 
     <ul>
-    {% for Text in texts %}
-        <li> {{ Text.content }} {{ Text.date }} </li>
-    {% endfor %}
+{#    {% for Text in texts %}#}
+{#        <li> {{ Text.content }} {{ Text.date }} </li>#}
+{#    {% endfor %}#}
+        <h1><a href="{% url 'messager' %}">Messages</a></h1>
 </ul>
 </body>
 </html>

@@ -3,6 +3,7 @@
     <p style="margin:0">Messager ^tm</p>
     <a href="{% url 'index' %}">Main page</a>
     {% if user.is_authenticated %}
+    <a href="{% url 'profile' %}">change profile</a>
     <form action="{% url 'logout' %}" method="post">{% csrf_token %}<button type="submit">Log Out</button></form>
     {% endif %}
 </nav>

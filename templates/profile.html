@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{#    {% if true %}#}
+{#        <img style="height: 100px" src="media/{{profile.pfimage}}"> {{ profile.pfp }} {{ profile.pfimage }}#} {# Tired a few different things here to no avail #}
+{#    {% else %}#}
+    <img style="height: 100px" src="https://imgs.search.brave.com/yszRftL1W07LQ1giXc8GEbXRV3GF1_nphk6aeJp4AOw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9wcmV2/aWV3LnJlZGQuaXQv/bXlzdGVyaW91cy1w/cm9maWxlLXBpY3R1/cmUtdjAtbHZmZDgx/MnBwcTFlMS5qcGVn/P3dpZHRoPTY0MCZj/cm9wPXNtYXJ0JmF1/dG89d2VicCZzPTcx/MmIyNDNkMDBlMGI3/MDE3ODM1MmZhNWRj/MzhkNWZmNDVmM2Yz/OGE">
+{#        <img style="height:50px" src="{% static 'images/defaultpfp.jpeg' %}"> hey#}
+{#    {% endif %}#}
+    <h1>Welcome, <u>{{ user }}</u> usrID: <u>{{ user.id }}</u></h1>
+    <h3>Thank you for your continued patronage since: <u>{{ user.date_joined|date:"Y-m-d" }}</u></h3>
+    <p><b>BIO:</b> {{ profile.bio }}</p>
+    <form action="{% url 'update_profile' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">Save Changes</button>
+    </form>
+</body>
+
+</html>
+{% endblock %}

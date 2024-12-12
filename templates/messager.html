@@ -7,10 +7,10 @@
     <title>Messager</title>
 </head>
 <body>
-    <h1>Hey, {{ user }}</h1>
-    {% for Text in texts %}
-        <p>{{ Text.room }} <b>{{ Text.content }}</b></p>
-    {% endfor %}
+{#    <h1>Hey, {{ user }}</h1>#}
+{#    {% for Text in texts %}#}
+{#        <p>{{ Text.room }} <b>{{ Text.content }}</b></p>#}
+{#    {% endfor %}#}
     <div id="messages"></div>
 
     <form id="form">
@@ -18,8 +18,7 @@
     </form>
 
     <script type="text/javascript">
-        let roomName = "general";
-        let url = new WebSocket(`ws://${window.location.host}/ws/socket-server/${roomName}/`);
+        let url = `ws://${window.location.host}/ws/socket-server/`
 
         const ws = new WebSocket(url)
 
@@ -30,7 +29,7 @@
             if(data.type === 'chat'){
                 let messages = document.getElementById('messages')
                 messages.insertAdjacentHTML('beforeend',`<div>
-                <p>${data.message}</p>
+                <p><b>${data.username}: </b><i>${data.time} </i>${data.message}</p>
                 </div>`)
             }
         }

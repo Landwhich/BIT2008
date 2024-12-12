@@ -1,51 +1,44 @@
 import json
-from channels.generic.websocket import WebsocketConsumer
-from asgiref.sync import async_to_sync
-import django
-
-django.setup()
-from .models import Text
+from channels.generic.websocket import AsyncWebsocketConsumer
+from django.utils.timezone import now, localtime
 
 
-class ChatConsumer(WebsocketConsumer):
-    def connect(self):
-        self.room_name = self.scope['url_route']['kwargs']['room_name']
-        self.room_group_name = f"chat_{self.room_name}"
+class ChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_group_name = 'test'
 
-        # self.room, created = Room.objects.get_or_create(name=self.room_name)
-
-        async_to_sync(self.channel_layer.group_add)(
+        await self.channel_layer.group_add(
             self.room_group_name,
             self.channel_name
         )
-        self.accept()
+        await self.accept()
 
-        self.send(text_data=json.dumps({
+        await self.send(text_data=json.dumps({
             'type': 'connected',
-            'message': f'connected to room: {self.room_name}'
+            'message': f'Connected to room: {self.room_group_name}'
         }))
 
-    def receive(self, text_data):
+    async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         message = text_data_json['message']
+        user = self.scope['user'].username
+        time = now().strftime('%H:%M:%S')
 
-        Text.objects.create(
-            text=message,
-            room=self.room_group_name
-        )
-
-        async_to_sync(self.channel_layer.group_send)(
+        await self.channel_layer.group_send(
             self.room_group_name,
             {
-                'type':'chat_message',
-                'message':message
+                'type': 'chat_message',
+                'message': message,
+                'username': user,
+                'time': time,
             }
         )
 
-    def chat_message(self, event):
+    async def chat_message(self, event):
         message = event['message']
-        self.send(text_data=json.dumps({
-            'type':'chat',
-            'message':message
+        await self.send(text_data=json.dumps({
+            'type': 'chat',
+            'message': message,
+            'username': event['username'],
+            'time': event['time'],
         }))
-
